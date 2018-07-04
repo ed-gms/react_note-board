@@ -7,19 +7,29 @@ class Board extends Component {
     this.state = {
       notes: [
         {
-          id: 1,
+          id: 0,
           note: "reminder 1"
         },
         {
-          id: 2,
+          id: 1,
           note: "reminder 2"
         },
         {
-          id: 3,
+          id: 2,
           note: "reminder 3"
         }
       ]
     }
+  }
+
+  updateNote = (newText, i) => {
+    console.log('updating item at index', i, newText)
+    this.setState(prevState => ({
+      notes: prevState.notes.map(
+        note => (note.id !== i) ? note : { ...note, note: newText}
+      )
+    }))
+
   }
 
   eachNote = (note, i) => {
@@ -27,6 +37,7 @@ class Board extends Component {
       <Note
         key={i}
         index={i}
+        onChange={this.updateNote}
       >
         {note.note}
       </Note>
