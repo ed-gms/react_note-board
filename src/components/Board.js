@@ -6,10 +6,19 @@ class Board extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      notes: [
-     
-      ]
+      notes: []
     };
+  }
+
+  componentWillMount() {
+    let self = this;
+    if (this.props.count) {
+      fetch(`https://baconipsum.com/api/?type=all-meat&sentences=${this.props.count}`)
+        .then(response => response.json())
+        .then(json => json[0]
+                        .split('. ')
+                        .forEach(sentence => self.addNote(sentence.substring(0, 25))))
+    }
   }
 
   updateNote = (newText, i) => {
@@ -48,8 +57,8 @@ class Board extends Component {
   eachNote = (note, i) => {
     return (
       <Note
-        key={i}
-        index={i}
+        key={note.id}
+        index={note.id}
         onChange={this.updateNote}
         onRemove={this.removeNote}
       >
